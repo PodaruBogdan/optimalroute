@@ -1,4 +1,4 @@
 package optimalroute.view;
 
-public class View {
+public class AdminView {
 }
