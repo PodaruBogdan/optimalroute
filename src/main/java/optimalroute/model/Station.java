@@ -1,10 +1,10 @@
 package optimalroute.model;
 
 public class Station {
-    private Coordinate location;
+    private Coordinate realLocation;
     protected String name;
-    public Station(String name, Coordinate location){
+    public Station(String name, Coordinate realLocation){
         this.name = name;
-        this.location = location;
+        this.realLocation = realLocation;
     }
 }

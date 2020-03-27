@@ -4,20 +4,23 @@ import java.util.List;
 
 public class BuslineBuilder {
     private String lineName;
-    private List<Station> stations;
-    public BuslineBuilder(String name, List<Station> stations){
+    private List<StationNode> nodes;
+    // private List<List<StationNode>> links;
+
+
+    public BuslineBuilder(String name, List<StationNode> nodes){
         this.lineName = name;
-        this.stations = stations;
+        this.nodes = nodes;
     }
     public BuslineBuilder setName(String lineName){
         this.lineName = lineName;
         return this;
     }
-    public BuslineBuilder setName(List<Station> stations){
-        this.stations=stations;
+    public BuslineBuilder setName(List<StationNode> nodes){
+        this.nodes=nodes;
         return this;
     }
     public Busline build(){
-        return new Busline(lineName, stations);
+        return new Busline(lineName, nodes);
     }
 }
