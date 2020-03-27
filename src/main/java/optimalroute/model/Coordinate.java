@@ -1,6 +1,8 @@
 package optimalroute.model;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
     private int x;
     private int y;
     public Coordinate(int x,int y){
@@ -23,4 +25,10 @@ public class Coordinate {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String toString(){
+        return "("+x+","+y+")";
+    }
+
+
 }

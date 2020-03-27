@@ -1,14 +1,15 @@
 package optimalroute.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class BuslineBuilder {
     private String lineName;
-    private List<StationNode> nodes;
+    private LinkedList<StationNode> nodes;
     // private List<List<StationNode>> links;
 
 
-    public BuslineBuilder(String name, List<StationNode> nodes){
+    public BuslineBuilder(String name, LinkedList<StationNode> nodes){
         this.lineName = name;
         this.nodes = nodes;
     }
@@ -16,7 +17,7 @@ public class BuslineBuilder {
         this.lineName = lineName;
         return this;
     }
-    public BuslineBuilder setName(List<StationNode> nodes){
+    public BuslineBuilder setName(LinkedList<StationNode> nodes){
         this.nodes=nodes;
         return this;
     }
