@@ -10,6 +10,10 @@ public class Coordinate implements Serializable {
         this.y = y;
     }
 
+    public static Coordinate getMiddleFrom(Coordinate c1, Coordinate c2){
+       return new Coordinate((c1.getX()+c2.getX())/2, (c1.getY()+c2.getY())/2);
+    }
+
     public int getX() {
         return x;
     }
@@ -28,6 +32,14 @@ public class Coordinate implements Serializable {
 
     public String toString(){
         return "("+x+","+y+")";
+    }
+    @Override
+    public boolean equals(Object obj){
+        Coordinate c = (Coordinate)obj;
+        if(x == c.getX() && y == c.getY()){
+            return true;
+        }
+        return false;
     }
 
 

@@ -21,41 +21,11 @@ public class StationNodePersistency extends Persistency<StationNode>{
         }
     }
 
-    private boolean checkContained(StationNode node, List<StationNode> list){
-        for(StationNode n:list){
-            if(node.getId() == n.getId())
-                return true;
-        }
-        return false;
-    }
-
-    public boolean add(StationNode node){
-        List<StationNode> result = new ArrayList<>();
-        try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            result = (List<StationNode>) objectInputStream.readObject();
-            if(checkContained(node, result)){
-                System.out.println("Station node with id "+node.getId()+" already exists!");
-                return false;
-            }
-            result.add(node);
-            objectInputStream.close();
-            fileInputStream.close();
-        }catch (EOFException e) {
-            result = new ArrayList<>();
-            result.add(node);
-        }catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public boolean add(List<StationNode> map){
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(result);
+            objectOutputStream.writeObject(map);
             objectOutputStream.close();
             fileOutputStream.close();
         } catch (IOException e) {
@@ -64,17 +34,16 @@ public class StationNodePersistency extends Persistency<StationNode>{
         }
         return true;
     }
-    public boolean remove(StationNode node){
-        return true;
-    }
     public List<StationNode> getAll(){
-        List<StationNode> result = new ArrayList<>();
+        List<StationNode> result=null;
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             result = (List<StationNode>)objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
+        }catch (EOFException e) {
+            result = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

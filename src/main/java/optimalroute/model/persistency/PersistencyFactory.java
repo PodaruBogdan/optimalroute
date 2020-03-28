@@ -3,7 +3,7 @@ package optimalroute.model.persistency;
 public class PersistencyFactory {
     public Persistency createPersistency(String type,String fileName){
         if(type.equals("Busline"))
-            return new BuslinePersistency();
+            return new BuslinePersistency(fileName);
         else if(type.equals("Account"))
             return new AccountPersistency();
         else if(type.equals("Report"))
