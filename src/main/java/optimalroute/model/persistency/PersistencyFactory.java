@@ -9,6 +9,6 @@ public class PersistencyFactory {
         else if(type.equals("StationNode"))
             return new StationNodePersistency(fileName);
         else
-            return new UserPersistency();
+            return null;
     }
 }

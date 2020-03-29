@@ -1,13 +1,7 @@
 package optimalroute.view;
-
-import optimalroute.model.StationNode;
-import optimalroute.model.persistency.Persistency;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class NodeTool extends JPanel {
 
@@ -15,7 +9,7 @@ public class NodeTool extends JPanel {
     private JButton add;
     private JButton rmv;
     private JButton save;
-    public NodeTool(List<StationNode> data, Persistency persistency){
+    public NodeTool(){
         addLink = new JButton("Add link");
         add = new JButton("Add node");
         rmv = new JButton("Remove node");
@@ -26,42 +20,17 @@ public class NodeTool extends JPanel {
         this.add(addLink);
         this.add(Box.createRigidArea(new Dimension(10,100)));
         this.add(save);
-        addLink.addActionListener(new AddLinkListener());
-        add.addActionListener(new AddListener());
-        save.addActionListener(new SaveListener(data, persistency));
-
-        rmv.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapArea.toggleRmv();
-            }
-        });
     }
-    public class AddLinkListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            MapArea.toggleLink();
-        }
+    public void AddAddListener(ActionListener listener){
+        add.addActionListener(listener);
     }
-    public class AddListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            MapArea.toggleAdd();
-        }
+    public void AddRemoveListener(ActionListener listener){
+        rmv.addActionListener(listener);
     }
-    public class SaveListener implements ActionListener{
-        Persistency persistency;
-        List<StationNode> data;
-        SaveListener(List<StationNode> data, Persistency persistency){
-            this.persistency = persistency;
-            this.data = data;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            persistency.add(data);
-            MapArea.toggleSave();
-        }
+    public void AddSaveListener(ActionListener listener){
+        save.addActionListener(listener);
+    }
+    public void AddAddLinkListener(ActionListener listener){
+        addLink.addActionListener(listener);
     }
 }

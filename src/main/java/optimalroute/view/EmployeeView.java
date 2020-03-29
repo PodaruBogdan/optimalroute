@@ -1,20 +1,23 @@
 package optimalroute.view;
-
 import optimalroute.model.persistency.Persistency;
-import optimalroute.model.persistency.PersistencyFactory;
-
 import javax.swing.*;
 
 public class EmployeeView extends JFrame {
-    public EmployeeView(){
+    private MapArea mapArea;
+    private NodeTool nodeTool;
+    public EmployeeView(Persistency persistency){
+        mapArea=new MapArea(persistency);
+        nodeTool=new NodeTool();
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        PersistencyFactory factory=new PersistencyFactory();
-        Persistency stationNodePersistency = factory.createPersistency("StationNode","stations.dat");
-        MapArea map = new MapArea(stationNodePersistency);
-        this.setContentPane(new DualView(map,new NodeTool(map.getData(), stationNodePersistency)));
+        this.setContentPane(new DualView(mapArea,nodeTool));
         this.pack();
         this.setVisible(true);
 
-
+    }
+    public MapArea getMapArea() {
+        return mapArea;
+    }
+    public NodeTool getNodeTool() {
+        return nodeTool;
     }
 }

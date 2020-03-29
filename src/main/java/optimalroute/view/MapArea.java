@@ -87,7 +87,6 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
             super.paintComponent(g);
             g.drawString("x=" + moveX
                     + ", y=" + moveY , 10, 30);
-
             for(StationNode n: data) {
                 Coordinate c = n.getApparentCoordinate();
                 g.setColor(Color.BLACK);

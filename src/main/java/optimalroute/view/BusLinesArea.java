@@ -3,7 +3,6 @@ package optimalroute.view;
 
 import optimalroute.model.Coordinate;
 import optimalroute.model.StationNode;
-import optimalroute.model.persistency.Persistency;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,22 +11,24 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 public class BusLinesArea extends JPanel implements MouseMotionListener {
-    private Persistency persistency;
     private List<StationNode> stationNodes;
     private String currentBus;
     int x=0,y=0;
-    public void setSelectedBus(String value){
-        currentBus = value;
-    }
-
-    public BusLinesArea(Persistency persistency) {
-        this.persistency = persistency;
-        stationNodes = persistency.getAll();
+    public BusLinesArea() {
         this.setBackground(Color.white);
         this.setPreferredSize(new Dimension(800, 600));
         this.addMouseMotionListener(this);
 
     }
+
+    public void setSelectedBus(String value){
+        currentBus = value;
+    }
+
+    public void setStationNodes(List<StationNode> stationNodes) {
+        this.stationNodes = stationNodes;
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(currentBus!=null) {
@@ -58,13 +59,10 @@ public class BusLinesArea extends JPanel implements MouseMotionListener {
         }
         this.repaint();
     }
-
-
     @Override
     public void mouseDragged(MouseEvent e) {
         this.repaint();
     }
-
     @Override
     public void mouseMoved(MouseEvent e) {
         x=e.getX();

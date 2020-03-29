@@ -9,14 +9,6 @@ public class UserAccount implements Serializable {
     private String email;
     private User user;
 
-    public UserAccount(String username,String id,String pswd,String email,User user){
-        this.username=username;
-        this.id=id;
-        this.email=email;
-        this.pswd=pswd;
-        this.user=user;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -71,5 +63,55 @@ public class UserAccount implements Serializable {
         }
         return false;
     }
+
+    private UserAccount(AccountBuilder builder){
+        this.username=builder.username;
+        this.user=builder.user;
+        this.pswd=builder.pswd;
+        this.email=builder.email;
+        this.id=builder.id;
+    }
+
+    public static class AccountBuilder {
+        private String id;
+        private String username;
+        private String pswd;
+        private String email;
+        private User user;
+
+        public AccountBuilder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public AccountBuilder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public AccountBuilder pswd(String pswd) {
+            this.pswd = pswd;
+            return this;
+        }
+
+        public AccountBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public AccountBuilder user(User user) {
+            this.user = user;
+            return this;
+        }
+        public UserAccount build(){
+            return new UserAccount(this);
+        }
+    }
+
+
+
+
+
+
 
 }
