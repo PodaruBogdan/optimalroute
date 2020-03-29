@@ -1,11 +1,12 @@
 package optimalroute.view;
-import optimalroute.model.Busline;
 import optimalroute.model.StationNode;
 import optimalroute.model.persistency.Persistency;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,13 @@ public class BusLinesListing extends JPanel {
     private JButton search;
     public BusLinesListing(BusLinesArea bla,Persistency persistency){
         search=new JButton("Search");
+        stations = persistency.getAll();
+        search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StationNode.Dijkstra(stations,f1.getText(),f2.getText());
+            }
+        });
         s1=new JLabel("Departure");
         s2=new JLabel("       Arrival");
         f1 = new JTextField(20);
@@ -31,7 +39,6 @@ public class BusLinesListing extends JPanel {
         p2.add(s2);
         p2.add(f2);
         this.persistency = persistency;
-        stations = persistency.getAll();
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         DefaultListModel model = new DefaultListModel();
         list = new JList(model);

@@ -1,10 +1,8 @@
 package optimalroute.model;
 
+import javax.swing.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class StationNode implements Serializable {
     private String id;
@@ -89,22 +87,74 @@ public class StationNode implements Serializable {
         return u;
     }
 
-    public static List<StationNode> Dijkstra(List<StationNode> nodes,String source,String destination){
+    private static double euclidianDistance(int x1,int x2,int y1,int y2){
+        return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    }
+    public static double distBetweenNodes(StationNode n1,StationNode n2){
+        int x1=n1.getApparentCoordinate().getX();
+        int y1=n1.getApparentCoordinate().getY();
+        int x2=n2.getApparentCoordinate().getX();
+        int y2=n2.getApparentCoordinate().getY();
+        return euclidianDistance(x1,x2,y1,y2);
+    }
+
+    public static void Dijkstra(List<StationNode> nodes,String source,String destination){
 
         HashMap<StationNode,Integer> dist = new HashMap<>();
         HashMap<StationNode,StationNode> prev =new HashMap<>();
         HashSet<StationNode> visited = new HashSet<>();
         StationNode start=null;
+        StationNode end=null;
+        Stack<StationNode> stack = new Stack<>();
         for(StationNode v : nodes){
             dist.put(v,Integer.MAX_VALUE);
             prev.put(v,null);
             visited.add(v);
             if(v.getStation().getName().equals(source))
                 start=v;
+            if(v.getStation().getName().equals(destination))
+                end=v;
         }
         dist.replace(start,0);
+        boolean foundSolution=false;
         while(!visited.isEmpty()){
             StationNode u = getMin(visited,dist);
+            if(u==null)
+                break;
+            visited.remove(u);
+            if (u.getStation().getName().equals(destination)) {
+                foundSolution=true;
+                break;
+            }
+            for (StationNode v : u.getNeighbors()) {
+                double val = dist.get(u) + distBetweenNodes(u, v);
+                if (val < dist.get(v)) {
+                    dist.replace(v, (int) val);
+                    prev.replace(v, u);
+
+                }
+            }
+        }
+
+
+        if(foundSolution){
+            StationNode tmp = end;
+            while(tmp!=start){
+                stack.push(tmp);
+                tmp = prev.get(tmp);
+            }
+            stack.push(start);
+            String message="";
+            while(!stack.empty()){
+                StationNode s = stack.pop();
+                message+=s.getStation().getName()+" -> ";
+            }
+            int len=message.length();
+            JOptionPane.showMessageDialog(null,message.substring(0,len-3));
+        }else
+        {
+            JOptionPane.showMessageDialog(null,"No route found");
+
         }
 
     }

@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class EmployeeView extends JFrame {
     public EmployeeView(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         PersistencyFactory factory=new PersistencyFactory();
         Persistency stationNodePersistency = factory.createPersistency("StationNode","stations.dat");
         MapArea map = new MapArea(stationNodePersistency);

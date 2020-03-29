@@ -1,6 +1,5 @@
 package optimalroute.view;
 
-import optimalroute.model.Busline;
 import optimalroute.model.StationNode;
 import optimalroute.model.persistency.Persistency;
 
