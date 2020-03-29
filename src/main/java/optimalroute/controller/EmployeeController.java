@@ -1,11 +1,15 @@
 package optimalroute.controller;
+import optimalroute.model.StationNode;
 import optimalroute.model.persistency.Persistency;
 import optimalroute.view.EmployeeView;
 import optimalroute.view.MapArea;
 import optimalroute.view.TravelerView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeController {
     Persistency persistency;
@@ -34,11 +38,29 @@ public class EmployeeController {
             MapArea.toggleAdd();
         }
     }
+    private List<String> getStationNames(List<StationNode> stations){
+        List<String> result=new ArrayList<>();
+        for(StationNode node: stations){
+            List<String> l = node.getBusLines();
+            for(String s:l) {
+                if (!result.contains(s)) {
+                    result.add(s);
+                }
+            }
+        }
+        return result;
+    }
     class SaveListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            persistency.add(view.getMapArea().getData());
-            travelerView.getBusLinesArea().setStationNodes(view.getMapArea().getData());
+            List<StationNode> list= view.getMapArea().getData();
+            persistency.add(list);
+            travelerView.getBusLinesArea().setStationNodes(list);
+            DefaultListModel<String> model = new DefaultListModel<>();
+            for(String s:getStationNames(list)){
+                model.addElement("Line : "+s);
+            }
+            travelerView.getBusLinesListing().getList().setModel(model);
             MapArea.toggleSave();
         }
     }

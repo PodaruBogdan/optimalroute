@@ -28,6 +28,7 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
     private List<StationNode> data;
     private static Coordinate lastSelected;
     List<Coordinate> clicks;
+    HashSet<Coordinate> set;
 
     public List<StationNode> getData(){
         return data;
@@ -81,10 +82,30 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
             data = stationNodePersistency.getAll();
             clicks = getListOfClicks(data);
             lastSelected = null;
+            set=new HashSet<>();
         }
+
+        private String getCommonBuses(StationNode s1,StationNode s2){
+            String msg="";
+            List<String> bus1=s1.getBusLines();
+            List<String> bus2=s2.getBusLines();
+            Collections.sort(bus1);
+            Collections.sort(bus2);
+            List<String> visited=new ArrayList<>();
+            for(String s:bus1){
+                if(bus2.contains(s) && !visited.contains(s)){
+                    msg+=s+",";
+                    visited.add(s);
+                }
+            }
+            return msg;
+        }
+
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+            set=new HashSet<>();
+
             g.drawString("x=" + moveX
                     + ", y=" + moveY , 10, 30);
             for(StationNode n: data) {
@@ -104,7 +125,15 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
                 for(StationNode neighbor:stationNode.getNeighbors()){
                     Coordinate c2 = neighbor.getApparentCoordinate();
                     g.setColor(Color.RED);
-                    g.drawLine(c1.getX(),c1.getY(),c2.getX(),c2.getY());
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setStroke(new BasicStroke(3));
+                    g2.drawLine(c1.getX(),c1.getY(),c2.getX(),c2.getY());
+                    Coordinate middle=new Coordinate((c1.getX()+c2.getX())/2,(c1.getY()+c2.getY())/2);
+                    if(!set.contains(middle)){
+                        g2.setColor(Color.BLACK);
+                        g2.drawString(getCommonBuses(stationNode,neighbor),middle.getX(),middle.getY());
+                        set.add(middle);
+                    }
                 }
             }
         }

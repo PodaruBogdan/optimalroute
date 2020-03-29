@@ -52,7 +52,9 @@ public class BusLinesArea extends JPanel implements MouseMotionListener {
                     Coordinate c2 = neighbor.getApparentCoordinate();
                     if(stationNode.getBusLines().contains(currentBus.substring(7)) && neighbor.getBusLines().contains(currentBus.substring(7))) {
                         g.setColor(Color.RED);
-                        g.drawLine(c1.getX(),c1.getY(),c2.getX(),c2.getY());
+                        Graphics2D g2 = (Graphics2D) g;
+                        g2.setStroke(new BasicStroke(3));
+                        g2.drawLine(c1.getX(),c1.getY(),c2.getX(),c2.getY());
                     }
                 }
             }

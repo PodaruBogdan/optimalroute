@@ -98,8 +98,36 @@ public class StationNode implements Serializable {
         return euclidianDistance(x1,x2,y1,y2);
     }
 
-    public static void Dijkstra(List<StationNode> nodes,String source,String destination){
+    private static String getMax(HashMap<String,Integer>map,List<String> list){
+        int max=-1;
+        String maxString=null;
+        for(String s:list){
+            if(map.get(s)>max){
+                max=map.get(s);
+                maxString=s;
+            }
+        }
+        return maxString;
+    }
 
+    private static List<String> intersection(StationNode s1,StationNode s2){
+        List<String> list=new ArrayList<>();
+        List<String> bus1=s1.getBusLines();
+        List<String> bus2=s2.getBusLines();
+        Collections.sort(bus1);
+        Collections.sort(bus2);
+        List<String> visited=new ArrayList<>();
+        for(String s:bus1){
+            if(bus2.contains(s) && !visited.contains(s)){
+                list.add(s);
+                visited.add(s);
+            }
+        }
+        return list;
+    }
+
+
+    public static void Dijkstra(List<StationNode> nodes,String source,String destination){
         HashMap<StationNode,Integer> dist = new HashMap<>();
         HashMap<StationNode,StationNode> prev =new HashMap<>();
         HashSet<StationNode> visited = new HashSet<>();
@@ -135,26 +163,40 @@ public class StationNode implements Serializable {
                 }
             }
         }
-
-
         if(foundSolution){
             StationNode tmp = end;
+            HashMap<String,Integer> aps = new HashMap<>();
             while(tmp!=start){
                 stack.push(tmp);
+                for(String s:tmp.getBusLines()){
+                    if(aps.containsKey(s)){
+                        aps.replace(s,aps.get(s)+1);
+                    }else
+                        aps.put(s,1);
+                }
                 tmp = prev.get(tmp);
             }
-            stack.push(start);
-            String message="";
+            for(String s:start.getBusLines()){
+                if(aps.containsKey(s)){
+                    aps.replace(s,aps.get(s)+1);
+                }else
+                    aps.put(s,1);
+            }
+            String lastSelected ="";
+            String message=start.getStation().getName();
+            StationNode s2=start;
             while(!stack.empty()){
                 StationNode s = stack.pop();
-                message+=s.getStation().getName()+" -> ";
+                String currentSelected = getMax(aps,intersection(s,s2));
+                message+=" --("+currentSelected+")-- "+s.getStation().getName();
+                lastSelected=currentSelected;
+                s2=s;
             }
             int len=message.length();
-            JOptionPane.showMessageDialog(null,message.substring(0,len-3));
-        }else
-        {
-            JOptionPane.showMessageDialog(null,"No route found");
 
+            JOptionPane.showMessageDialog(null,message);
+        }else {
+            JOptionPane.showMessageDialog(null,"No route found");
         }
 
     }
