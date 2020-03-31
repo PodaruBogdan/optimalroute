@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Child {
+    private String type;
     private String info;
     private List<Child> childList;
     boolean processed;
@@ -16,6 +17,13 @@ public class Child {
         childList=new ArrayList<>();
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type){
+        this.type=type;
+    }
     public Object getObj() {
         return obj;
     }

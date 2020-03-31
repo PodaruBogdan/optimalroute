@@ -132,7 +132,8 @@ public class EmployeeController {
                             break;
                         }
                     }
-                    Child cost=new Child("Cost:"+distances.get(end));
+                    Child cost=new Child(""+distances.get(end));
+                    cost.setType("Cost");
                     root.addChild(cost);
                     while(!stat.isEmpty()){
                         StationNode node=stat.pop();
@@ -141,17 +142,21 @@ public class EmployeeController {
                         HashSet<String> s=new HashSet(node.getBusLines());
                         for(String b:s){
                             Child t=new Child(b);
+                            t.setType("Busline");
                             buses.addChild(t);
                         }
                         Child neighbors=new Child("Neighbors");
                         for(StationNode n:node.getNeighbors()){
                             Child t=new Child(n.getStation().getName());
+                            t.setType("Neighbor");
                             neighbors.addChild(t);
                         }
                         Child appC = new Child(node.getApparentCoordinate().toString());
                         Child ID = new Child(node.getId());
+                        ID.setType("ID");
                         c.addChild(ID);
                         c.addChild(appC);
+                        appC.setType("Apparent coordinate");
                         c.addChild(neighbors);
                         c.addChild(buses);
                         root.addChild(c);

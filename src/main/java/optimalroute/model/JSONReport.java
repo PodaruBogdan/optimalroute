@@ -1,4 +1,8 @@
 package optimalroute.model;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.FileWriter;
@@ -28,20 +32,24 @@ public class JSONReport {
             }
         }else{
             JSONObject obj = new JSONObject();
-            obj.put("",root.getInfo());
+            obj.put(root.getType(),root.getInfo());
             root.setObj(obj);
         }
 
     }
     public static void writeLine(String fileName, Child root){
         flattenTree(root);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
         JSONArray result=new JSONArray();
         for(Child c:root.getChildList()){
             result.add(c.getObj());
         }
         try (FileWriter file = new FileWriter("optimal.json")) {
 
-            file.append(result.toJSONString());
+            JsonElement je = jp.parse(result.toJSONString());
+            String prettyJsonString = gson.toJson(je);
+            file.append(prettyJsonString);
             file.flush();
 
         } catch (IOException e) {
