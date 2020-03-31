@@ -75,6 +75,9 @@ public class TravelerController {
             StationNode.Dijkstra(stationsPersistency.getAll(), view.getBusLinesListing().getF1().getText(),view.getBusLinesListing().getF2().getText());
         }
     }
+
+
+
     class LoginListener implements ActionListener{
 
         @Override

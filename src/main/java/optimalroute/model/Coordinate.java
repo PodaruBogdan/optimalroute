@@ -31,7 +31,7 @@ public class Coordinate implements Serializable {
     }
 
     public String toString(){
-        return "("+x+","+y+")";
+        return "("+x+" . "+y+")";
     }
     @Override
     public boolean equals(Object obj){

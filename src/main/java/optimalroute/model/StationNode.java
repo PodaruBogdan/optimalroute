@@ -1,5 +1,8 @@
 package optimalroute.model;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
@@ -69,9 +72,13 @@ public class StationNode implements Serializable {
     public String toString(){
         String neighbors = "";
         for(StationNode s:this.getNeighbors()){
-            neighbors+= s.getStation().getName()+" ";
+            neighbors+= s.getStation().getName()+";";
         }
-        return id+" "+station.getName()+" "+apparentCoordinate+" "+neighbors;
+        String buses="";
+        for(String s:busLines){
+            buses+=s+";";
+        }
+        return id+","+station.getName()+","+apparentCoordinate+","+neighbors+","+buses;
     }
 
 
@@ -98,7 +105,7 @@ public class StationNode implements Serializable {
         return euclidianDistance(x1,x2,y1,y2);
     }
 
-    private static String getMax(HashMap<String,Integer>map,List<String> list){
+    public static String getMax(HashMap<String,Integer>map,List<String> list){
         int max=-1;
         String maxString=null;
         for(String s:list){
@@ -110,7 +117,7 @@ public class StationNode implements Serializable {
         return maxString;
     }
 
-    private static List<String> intersection(StationNode s1,StationNode s2){
+    public static List<String> intersection(StationNode s1,StationNode s2){
         List<String> list=new ArrayList<>();
         List<String> bus1=s1.getBusLines();
         List<String> bus2=s2.getBusLines();
@@ -127,13 +134,14 @@ public class StationNode implements Serializable {
     }
 
 
-    public static void Dijkstra(List<StationNode> nodes,String source,String destination){
+    public static Pair<Stack<StationNode>,HashMap<StationNode,Integer>> Dijkstra(List<StationNode> nodes, String source, String destination){
         HashMap<StationNode,Integer> dist = new HashMap<>();
         HashMap<StationNode,StationNode> prev =new HashMap<>();
         HashSet<StationNode> visited = new HashSet<>();
         StationNode start=null;
         StationNode end=null;
         Stack<StationNode> stack = new Stack<>();
+        Stack<StationNode> result = new Stack<>();
         for(StationNode v : nodes){
             dist.put(v,Integer.MAX_VALUE);
             prev.put(v,null);
@@ -168,6 +176,7 @@ public class StationNode implements Serializable {
             HashMap<String,Integer> aps = new HashMap<>();
             while(tmp!=start){
                 stack.push(tmp);
+                result.push(tmp);
                 for(String s:tmp.getBusLines()){
                     if(aps.containsKey(s)){
                         aps.replace(s,aps.get(s)+1);
@@ -176,6 +185,7 @@ public class StationNode implements Serializable {
                 }
                 tmp = prev.get(tmp);
             }
+            result.push(start);
             for(String s:start.getBusLines()){
                 if(aps.containsKey(s)){
                     aps.replace(s,aps.get(s)+1);
@@ -192,13 +202,12 @@ public class StationNode implements Serializable {
                 lastSelected=currentSelected;
                 s2=s;
             }
-            int len=message.length();
-
             JOptionPane.showMessageDialog(null,message);
+            return new ImmutablePair<>(result,dist);
         }else {
             JOptionPane.showMessageDialog(null,"No route found");
+            return null;
         }
-
     }
 
 
