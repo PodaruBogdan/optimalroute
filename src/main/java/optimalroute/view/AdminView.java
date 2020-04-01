@@ -1,18 +1,22 @@
 package optimalroute.view;
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class AdminView extends JFrame {
     private JButton add;
     private JButton rmv;
+    private JButton upd;
 
     private JLabel l1,l2,l3,l4,l5;
     private JTextField t1,t2,t3,t4,t5;
     private JList<String> list;
     public AdminView() {
+        this.setTitle("Employee administration");
         add = new JButton("Add new employee");
         rmv = new JButton("Remove employee");
+        upd = new JButton("Update employee info");
         l1 = new JLabel("role: ");
         l2 = new JLabel("name: ");
         l3 = new JLabel("email: ");
@@ -52,11 +56,21 @@ public class AdminView extends JFrame {
         panel.add(p5);
         panel.add(add);
         panel.add(rmv);
+        panel.add(upd);
+        panel.add(Box.createRigidArea(new Dimension(10,10)));
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setContentPane(panel);
         this.pack();
         this.setVisible(true);
 
+    }
+
+    public JButton getUpd() {
+        return upd;
+    }
+
+    public void setUpd(JButton upd) {
+        this.upd = upd;
     }
 
     public JButton getAdd() {
@@ -169,4 +183,11 @@ public class AdminView extends JFrame {
     public void addAddListener(ActionListener listener){
         add.addActionListener(listener);
     }
+    public void addUpdateListener(ActionListener listener){
+        upd.addActionListener(listener);
+    }
+    public void addListListener(ListSelectionListener listener){
+        list.addListSelectionListener(listener);
+    }
+
 }

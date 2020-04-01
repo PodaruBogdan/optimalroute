@@ -1,10 +1,6 @@
 package optimalroute.controller;
-import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
-import optimalroute.model.CSVReport;
-import optimalroute.model.Child;
-import optimalroute.model.JSONReport;
-import optimalroute.model.StationNode;
+import optimalroute.model.*;
 import optimalroute.model.persistency.Persistency;
 import optimalroute.view.EmployeeView;
 import optimalroute.view.MapArea;
@@ -14,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -80,8 +75,50 @@ public class EmployeeController {
 
     class SearchOptimalListener implements ActionListener{
 
-
-
+        private Child getMyRoot(Stack<StationNode> stat,HashMap<StationNode,Integer> distances){
+            Child root=new Child("optimal_route");
+            root.setType("route_info");
+            StationNode end=null;
+            for(int i=0;i<stat.size();i++) {
+                if (stat.get(i).getStation().getName().equals(view.getNodeTool().getToField().getText())) {
+                    end = stat.get(i);
+                    break;
+                }
+            }
+            Child cost=new Child(""+distances.get(end));
+            cost.setType("cost");
+            root.addChild(cost);
+            while(!stat.isEmpty()){
+                StationNode node=stat.pop();
+                Child c=new Child(node.getStation().getName());
+                c.setType("station");
+                Child buses=new Child("buslines");
+                buses.setType("buslines");
+                HashSet<String> s=new HashSet(node.getBusLines());
+                for(String b:s){
+                    Child t=new Child(b);
+                    t.setType("busline");
+                    buses.addChild(t);
+                }
+                Child neighbors=new Child("neighbors");
+                neighbors.setType("neighbors");
+                for(StationNode n:node.getNeighbors()){
+                    Child t=new Child(n.getStation().getName());
+                    t.setType("neighbor");
+                    neighbors.addChild(t);
+                }
+                Child appC = new Child(node.getApparentCoordinate().toString());
+                Child ID = new Child(node.getId());
+                ID.setType("id");
+                appC.setType("apparent_coordinate");
+                c.addChild(ID);
+                c.addChild(appC);
+                c.addChild(neighbors);
+                c.addChild(buses);
+                root.addChild(c);
+            }
+            return root;
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -124,44 +161,12 @@ public class EmployeeController {
                     }
                      break;
                 case 1:
-                    Child root=new Child("Optimal Route");
-                    StationNode end=null;
-                    for(int i=0;i<stat.size();i++) {
-                        if (stat.get(i).getStation().getName().equals(view.getNodeTool().getToField().getText())) {
-                            end = stat.get(i);
-                            break;
-                        }
-                    }
-                    Child cost=new Child(""+distances.get(end));
-                    cost.setType("Cost");
-                    root.addChild(cost);
-                    while(!stat.isEmpty()){
-                        StationNode node=stat.pop();
-                        Child c=new Child(node.getStation().getName());
-                        Child buses=new Child("LineBuses");
-                        HashSet<String> s=new HashSet(node.getBusLines());
-                        for(String b:s){
-                            Child t=new Child(b);
-                            t.setType("Busline");
-                            buses.addChild(t);
-                        }
-                        Child neighbors=new Child("Neighbors");
-                        for(StationNode n:node.getNeighbors()){
-                            Child t=new Child(n.getStation().getName());
-                            t.setType("Neighbor");
-                            neighbors.addChild(t);
-                        }
-                        Child appC = new Child(node.getApparentCoordinate().toString());
-                        Child ID = new Child(node.getId());
-                        ID.setType("ID");
-                        c.addChild(ID);
-                        c.addChild(appC);
-                        appC.setType("Apparent coordinate");
-                        c.addChild(neighbors);
-                        c.addChild(buses);
-                        root.addChild(c);
-                    }
+                    Child root = getMyRoot(stat,distances);
                     JSONReport.writeLine("optimal.json",root);
+                    break;
+                case 2:
+                    Child root2 = getMyRoot(stat,distances);
+                    XMLReport.writeLine(root2,"optimal.xml");
                     break;
                 default:break;
             }
@@ -176,10 +181,6 @@ public class EmployeeController {
 
         }
     }
-
-
-
-
 
     class RemoveListener implements ActionListener {
         @Override public void actionPerformed (ActionEvent e){

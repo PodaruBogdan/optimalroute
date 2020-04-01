@@ -6,6 +6,7 @@ public class EmployeeView extends JFrame {
     private MapArea mapArea;
     private NodeTool nodeTool;
     public EmployeeView(Persistency persistency){
+        this.setTitle("Content creation");
         mapArea=new MapArea(persistency);
         nodeTool=new NodeTool();
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

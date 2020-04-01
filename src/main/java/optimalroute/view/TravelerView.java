@@ -9,6 +9,9 @@ public class TravelerView extends JFrame {
     private BusLinesListing busLinesListing;
     private LoginArea loginArea;
     public TravelerView(){
+        ImageIcon img = new ImageIcon("bus.jpg");
+        this.setIconImage(img.getImage());
+        this.setTitle("Busline App");
         busLinesArea = new BusLinesArea();
         busLinesListing = new BusLinesListing();
         loginArea = new LoginArea();

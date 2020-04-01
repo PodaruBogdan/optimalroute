@@ -4,11 +4,16 @@ import optimalroute.model.Coordinate;
 import optimalroute.model.StationNode;
 import optimalroute.model.persistency.Persistency;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -133,6 +138,13 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
                         g2.setColor(Color.BLACK);
                         g2.drawString(getCommonBuses(stationNode,neighbor),middle.getX(),middle.getY());
                         set.add(middle);
+                        try {
+                            URL imageSrc = ((new File("busicon.png")).toURI()).toURL();
+                            BufferedImage bi = ImageIO.read(imageSrc);
+                            g.drawImage(bi, middle.getX(),middle.getY()+10,25,25,null );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
