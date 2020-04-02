@@ -13,14 +13,13 @@ public class NodeTool extends JPanel {
     private JLabel to;
     private JTextField fromField;
     private JTextField toField;
-    private JButton saveMap;
+    //private JButton saveMap;
     private JButton searchOptimal;
     public NodeTool(){
         from=new JLabel("FROM : ");
         to=new JLabel("to : ");
         toField=new JTextField(10);
         fromField=new JTextField(10);
-        saveMap=new JButton("Save map");
         searchOptimal=new JButton("Search optimal");
         addLink = new JButton("Add link");
         add = new JButton("Add node");
@@ -32,7 +31,6 @@ public class NodeTool extends JPanel {
         this.add(addLink);
         this.add(Box.createRigidArea(new Dimension(10,100)));
         this.add(save);
-        this.add(saveMap);
         this.add(Box.createRigidArea(new Dimension(10,20)));
         JPanel p1=new JPanel();
         JPanel p2=new JPanel();
@@ -62,13 +60,7 @@ public class NodeTool extends JPanel {
         this.toField = toField;
     }
 
-    public JButton getSaveMap() {
-        return saveMap;
-    }
 
-    public void setSaveMap(JButton saveMap) {
-        this.saveMap = saveMap;
-    }
 
     public JButton getSearchOptimal() {
         return searchOptimal;
@@ -93,9 +85,7 @@ public class NodeTool extends JPanel {
     public void AddOptimalListener(ActionListener listener){
         searchOptimal.addActionListener(listener);
     }
-    public void AddSaveMapListener(ActionListener listener){
-        saveMap.addActionListener(listener);
-    }
+
 
 
 

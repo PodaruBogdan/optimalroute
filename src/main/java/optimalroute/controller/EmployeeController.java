@@ -26,7 +26,7 @@ public class EmployeeController {
         view.getNodeTool().AddAddListener(new AddListener());
         view.getNodeTool().AddRemoveListener(new RemoveListener());
         view.getNodeTool().AddOptimalListener(new SearchOptimalListener());
-        view.getNodeTool().AddSaveMapListener(new SaveMapListener());
+        //view.getNodeTool().AddSaveMapListener(new SaveMapListener());
     }
 
     class AddLinkListener implements ActionListener {
@@ -123,55 +123,58 @@ public class EmployeeController {
         @Override
         public void actionPerformed(ActionEvent e) {
             Pair<Stack<StationNode>, HashMap<StationNode,Integer>> list= StationNode.Dijkstra(persistency.getAll(),view.getNodeTool().getFromField().getText(),view.getNodeTool().getToField().getText());
-            Stack<StationNode> stat = list.getKey();
-            HashMap<StationNode,Integer> distances = list.getValue();
-            Object[] options = {".csv",
-                    ",json",
-                    ".xml"};
+            if(list!=null) {
+                Stack<StationNode> stat = list.getKey();
+                HashMap<StationNode, Integer> distances = list.getValue();
+                Object[] options = {".csv",
+                        ",json",
+                        ".xml"};
 
-            int result = JOptionPane.showOptionDialog(null,
-                    "Save found route as",
-                    "Save file",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    options,
-                    null);
-            switch (result){
-                case 0:
-                    try {
-                        StationNode end=null;
-                        for(int i=0;i<stat.size();i++){
-                            if(stat.get(i).getStation().getName().equals(view.getNodeTool().getToField().getText())){
-                                end=stat.get(i);
-                                break;
+                int result = JOptionPane.showOptionDialog(null,
+                        "Save found route as",
+                        "Save file",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        null);
+                switch (result) {
+                    case 0:
+                        try {
+                            StationNode end = null;
+                            for (int i = 0; i < stat.size(); i++) {
+                                if (stat.get(i).getStation().getName().equals(view.getNodeTool().getToField().getText())) {
+                                    end = stat.get(i);
+                                    break;
+                                }
                             }
+                            String data = distances.get(end) + ",";
+                            while (!stat.isEmpty()) {
+                                StationNode s = stat.pop();
+                                data += s.getStation().getName() + " " + s.getApparentCoordinate() + ",";
+                            }
+                            String[] line = CSVReport.convertToCSV(data, ',');
+                            CSVReport.writeLine("optimal.csv", line, ',');
+                        } catch (CsvValidationException ex) {
+                            ex.printStackTrace();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
-                        String data=distances.get(end)+",";
-                        while(!stat.isEmpty()){
-                            StationNode s=stat.pop();
-                            data+=s.getStation().getName()+" "+s.getApparentCoordinate()+",";
-                        }
-                        String[] line=CSVReport.convertToCSV(data,',');
-                        CSVReport.writeLine("optimal.csv",line,',');
-                    } catch (CsvValidationException ex) {
-                        ex.printStackTrace();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                     break;
-                case 1:
-                    Child root = getMyRoot(stat,distances);
-                    JSONReport.writeLine("optimal.json",root);
-                    break;
-                case 2:
-                    Child root2 = getMyRoot(stat,distances);
-                    XMLReport.writeLine(root2,"optimal.xml");
-                    break;
-                default:break;
+                        break;
+                    case 1:
+                        Child root = getMyRoot(stat, distances);
+                        JSONReport.writeLine("optimal.json", root);
+                        break;
+                    case 2:
+                        Child root2 = getMyRoot(stat, distances);
+                        XMLReport.writeLine(root2, "optimal.xml");
+                        break;
+                    default:
+                        break;
+                }
             }
-
         }
+
     }
 
     class SaveMapListener implements ActionListener{
