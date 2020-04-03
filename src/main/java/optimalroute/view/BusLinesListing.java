@@ -5,7 +5,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 
 public class BusLinesListing extends JPanel {
@@ -37,7 +36,7 @@ public class BusLinesListing extends JPanel {
         list.setSelectionMode(0);
         JScrollPane pane = new JScrollPane(list);
         this.add(pane);
-
+        this.add(searchLine);
 
         searchLine.getDocument().addDocumentListener(new DocumentListener(){
             @Override public void insertUpdate(DocumentEvent e) { filter();}

@@ -1,6 +1,6 @@
 [
   {
-    "cost": "342"
+    "cost": "617"
   },
   {
     "s1": [
@@ -44,14 +44,47 @@
           },
           {
             "neighbor": "s3"
-          },
-          {
-            "neighbor": "s6"
           }
         ]
       },
       {
         "buslines": [
+          {
+            "busline": "12"
+          },
+          {
+            "busline": "35"
+          },
+          {
+            "busline": "25"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "s3": [
+      {
+        "id": "6478fb38-a128-4d7e-83b2-8423b3e5b177"
+      },
+      {
+        "apparent_coordinate": "(144 . 311)"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "s2"
+          },
+          {
+            "neighbor": "s5"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "46B"
+          },
           {
             "busline": "35"
           },

@@ -69,7 +69,6 @@ public class StationNode implements Serializable {
     }
 
 
-
     public String toString(){
         String neighbors = "";
         for(StationNode s:this.getNeighbors()){
