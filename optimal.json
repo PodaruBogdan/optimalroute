@@ -1,0 +1,65 @@
+[
+  {
+    "cost": "342"
+  },
+  {
+    "s1": [
+      {
+        "id": "d64912e9-392b-4942-b470-95ad384edea0"
+      },
+      {
+        "apparent_coordinate": "(675 . 83)"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "s2"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "35"
+          },
+          {
+            "busline": "25"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "s2": [
+      {
+        "id": "24f88c93-f3fd-499f-8891-13e1aea27cb8"
+      },
+      {
+        "apparent_coordinate": "(334 . 111)"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "s1"
+          },
+          {
+            "neighbor": "s3"
+          },
+          {
+            "neighbor": "s6"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "35"
+          },
+          {
+            "busline": "25"
+          }
+        ]
+      }
+    ]
+  }
+]
